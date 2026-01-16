@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Floating Love ❤️</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .floating {
+      position: absolute;
+      animation: float 18s linear infinite;
+    }
+
+    @keyframes float {
+      from { transform: translateY(100vh) rotate(0deg); }
+      to { transform: translateY(-120vh) rotate(360deg); }
+    }
+
+    .love-text {
+      font-family: 'Brush Script MT', cursive;
+      font-size: 1.4em;
+      color: #ff4d6d;
+      text-shadow: 2px 2px 6px rgba(255,0,80,0.6);
+      white-space: nowrap;
+    }
+
+    img {
+      width: 110px;
+      height: auto;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(255,255,255,0.3);
+    }
+
+    /* 🎵 Bigger, mobile-friendly button */
+    #musicBtn {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      padding: 18px 28px;
+      font-size: 20px;
+      border: none;
+      border-radius: 14px;
+      background: #ff4d6d;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 0 12px rgba(255,0,80,0.7);
+      z-index: 9999;
+      touch-action: manipulation;
+    }
+
+    /* Make button even bigger on phones */
+    @media (max-width: 600px) {
+      #musicBtn {
+        padding: 22px 32px;
+        font-size: 22px;
+        bottom: 20px;
+        right: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🎵 Background Music (NO AUTOPLAY) -->
+  <audio id="bgm" loop>
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- 🎵 Play/Pause Button -->
+  <button id="musicBtn">Play Music</button>
+
+  <script>
+    const audio = document.getElementById("bgm");
+    const btn = document.getElementById("musicBtn");
+
+    audio.volume = 0.5;
+
+    // Button controls music ONLY when tapped
+    btn.addEventListener("click", () => {
+      if (audio.paused) {
+        audio.play();
+        btn.textContent = "Pause Music";
+      } else {
+        audio.pause();
+        btn.textContent = "Play Music";
+      }
+    });
+
+    function generatePositions(count) {
+      let positions = [];
+      let gap = 100 / count;
+
+      for (let i = 0; i < count; i++) {
+        positions.push(i * gap + (Math.random() * (gap * 0.6)));
+      }
+
+      return positions;
+    }
+
+    function createText(text, count) {
+      let positions = generatePositions(count);
+
+      positions.forEach(left => {
+        let el = document.createElement("div");
+        el.className = "floating love-text";
+        el.textContent = text;
+        el.style.left = left + "vw";
+        el.style.top = Math.random() * 100 + "vh";
+        el.style.animationDuration = (10 + Math.random() * 10) + "s";
+        document.body.appendChild(el);
+      });
+    }
+
+    function createImages(images, repeat) {
+      let total = images.length * repeat;
+      let positions = generatePositions(total);
+      let index = 0;
+
+      for (let r = 0; r < repeat; r++) {
+        images.forEach(src => {
+          let img = document.createElement("img");
+          img.src = src;
+          img.className = "floating";
+          img.style.left = positions[index] + "vw";
+          img.style.top = Math.random() * 100 + "vh";
+          img.style.animationDuration = (12 + Math.random() * 10) + "s";
+          document.body.appendChild(img);
+          index++;
+        });
+      }
+    }
+
+    createText("I Love You ❤️", 80);
+    createText("Happy 7 Months ❤️", 80);
+
+    const photos = ["8.jpg","9.jpg","10.jpg","11.jpg","12.jpg","13.jpg"];
+    createImages(photos, 4);
+
+  </script>
+</body>
+</html>
